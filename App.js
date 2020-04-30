@@ -5,6 +5,7 @@ import React from "react";
 import { Provider } from "./src/context/BlogContext";
 import ShowScreen from  "./src/screens/ShowScreen";
 import CreateScreen from  "./src/screens/CreateScreen";
+import EditScreen from  "./src/screens/EditScreen";
 
 // stackNavigator for the 3 main screens
 const navigator = createStackNavigator(
@@ -12,6 +13,7 @@ const navigator = createStackNavigator(
     Index: IndexScreen,
     Show: ShowScreen,
     Create: CreateScreen,
+    Edit: EditScreen,
 
   },
   {

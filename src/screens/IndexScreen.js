@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import {
   View,
   Text,
@@ -12,16 +12,33 @@ import { Feather } from "@expo/vector-icons";
 
 const IndexScreen = ({ navigation }) => {
   // import state, addBlogPost from useContext
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+  const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+  
+  //Never call getBlogPosts()  -an api call -by itself as it would get called everytime component renders in
+  // an infinite loop. We have to use useEffect
+
+  useEffect(() => {
+    getBlogPosts();
+    const listener = navigation.addListener('didFocus', () =>{
+      getBlogPosts(); // the reason why we are adding a listener here rather than changing
+      // value from array added as parameter. This is because we are fetching data from an
+      // api not from the local state. If it was local state we could add value in array passed
+      // as param at the end. 
+    })
+
+
+    // only invoked from useEffect if screen totally unmounted. Prevents memory leak.
+    return () => {
+      listener.remove(); 
+    }
+  }, [])
 
   return (
     <View>
-      {/* on press addBlogPost */}
-      <Button title="Add post" onPress={addBlogPost} />
-
+     
       <FlatList
         data={state}
-        keyExtractor={(blogPost) => blogPost.title}
+        keyExtractor={(blogPost) => blogPost.id}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
@@ -47,7 +64,7 @@ IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerRight: () => (
       <TouchableOpacity onPress={() => navigation.navigate("Create")}>
-        <Feather name="plus" size={30} />
+        <Feather name="plus" size={35} />
       </TouchableOpacity>
     ),
   };
