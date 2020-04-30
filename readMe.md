@@ -1,4 +1,4 @@
-## React native example of useContext - to create something a bit like redux
+## React native. Advanced example of useContext
 
 This project uses a file called createDataContext to add some functionality
 that makes it a bit more like redux. The createDataContext functions returns
